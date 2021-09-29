@@ -38,7 +38,7 @@ class _ListFoodMenuShopState extends State<ListFoodMenuShop> {
     print('idShop = $idShop');
 
     String url =
-        '${MyConstant().domain}/UngFood/getFoodWhereIdShop.php?isAdd=true&idShop=$idShop';
+        '${MyConstant().domain}/CarStore/getFoodWhereIdShop.php?isAdd=true&idShop=$idShop';
     await Dio().get(url).then((value) {
       setState(() {
         loadStatus = false;
@@ -78,7 +78,7 @@ class _ListFoodMenuShopState extends State<ListFoodMenuShop> {
     return status
         ? showListFood()
         : Center(
-            child: Text('ยังไม่มีรายการอาหาร'),
+            child: Text('ยังไม่มีรายการประเภทบริการ'),
           );
   }
 
@@ -104,11 +104,11 @@ class _ListFoodMenuShopState extends State<ListFoodMenuShop> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      foodModels[index].nameFood,
+                      foodModels[index].nameType,
                       style: MyStyle().mainTitle,
                     ),
                     Text(
-                      'ราคา ${foodModels[index].price} บาท',
+                      'ราคา ${foodModels[index].price} บาท บาท',
                       style: MyStyle().mainH2Title,
                     ),
                     Text(foodModels[index].detail),
@@ -150,7 +150,7 @@ class _ListFoodMenuShopState extends State<ListFoodMenuShop> {
       context: context,
       builder: (context) => SimpleDialog(
         title:
-            MyStyle().showTitleH2('คุณต้องการลบ เมนู ${foodModel.nameFood} ?'),
+            MyStyle().showTitleH2('คุณต้องการลบ  ${foodModel.nameType} ใช่หรือไม่'),
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -159,7 +159,7 @@ class _ListFoodMenuShopState extends State<ListFoodMenuShop> {
                 onPressed: () async {
                   Navigator.pop(context);
                   String url =
-                      '${MyConstant().domain}/UngFood/deleteFoodWhereId.php?isAdd=true&id=${foodModel.id}';
+                      '${MyConstant().domain}/CarStore/deleteFoodWhereId.php?isAdd=true&id=${foodModel.id}';
                   await Dio().get(url).then((value) => readFoodMenu());
                 },
                 child: Text('ยืนยัน'),

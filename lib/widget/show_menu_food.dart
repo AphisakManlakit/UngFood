@@ -1,3 +1,5 @@
+//หน้าเลือกเมนูอาหาร
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -8,6 +10,7 @@ import 'package:location/location.dart';
 import 'package:ungfood/model/cart_model.dart';
 import 'package:ungfood/model/food_model.dart';
 import 'package:ungfood/model/user_model.dart';
+import 'package:ungfood/screens/show_cart.dart';
 import 'package:ungfood/utility/my_api.dart';
 import 'package:ungfood/utility/my_constant.dart';
 import 'package:ungfood/utility/my_style.dart';
@@ -49,7 +52,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
   Future<Null> readFoodMenu() async {
     idShop = userModel.id;
     String url =
-        '${MyConstant().domain}/UngFood/getFoodWhereIdShop.php?isAdd=true&idShop=$idShop';
+        '${MyConstant().domain}/CarStore/getFoodWhereIdShop.php?isAdd=true&idShop=$idShop';
     Response response = await Dio().get(url);
     // print('res --> $response');
 
@@ -73,7 +76,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
                 // print('You Click index = $index');
-                amount = 1;
+                amount = 0;
                 confirmOrder(index);
               },
               child: Row(
@@ -88,13 +91,13 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                         Row(
                           children: <Widget>[
                             Text(
-                              foodModels[index].nameFood,
+                              foodModels[index].nameType,
                               style: MyStyle().mainTitle,
                             ),
                           ],
                         ),
                         Text(
-                          '${foodModels[index].price} บาท',
+                          '${foodModels[index].price} บาทt',
                           style: TextStyle(
                             fontSize: 40,
                             color: MyStyle().darkColor,
@@ -146,7 +149,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                foodModels[index].nameFood,
+                foodModels[index].nameType,
                 style: MyStyle().mainH2Title,
               ),
             ],
@@ -168,37 +171,38 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.add_circle,
-                      size: 36,
-                      color: Colors.green,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        amount++;
-                        // print('amount = $amount');
-                      });
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.add_circle,
+                  //     size: 36,
+                  //     color: Colors.green,
+                  //   ),
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       amount++;
+                  //       // print('amount = $amount');
+                  //     });
+                  //   },
+                  // ),
                   Text(
                     amount.toString(),
-                    style: MyStyle().mainTitle,
+                    //style: MyStyle().mainTitle,
+                    style: MyStyle().mainTitle1,
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.remove_circle,
-                      size: 36,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {
-                      if (amount > 1) {
-                        setState(() {
-                          amount--;
-                        });
-                      }
-                    },
-                  )
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.remove_circle,
+                  //     size: 36,
+                  //     color: Colors.red,
+                  //   ),
+                  //   onPressed: () {
+                  //     if (amount > 0) {
+                  //       setState(() {
+                  //         amount--;
+                  //       });
+                  //     }
+                  //   },
+                  // )
                 ],
               ),
               Row(
@@ -212,13 +216,16 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                           borderRadius: BorderRadius.circular(15)),
                       onPressed: () {
                         Navigator.pop(context);
-                        // print(
-                        //     'Order ${foodModels[index].nameFood} Amount = $amount');
-
                         addOrderToCart(index);
+                        setState(() {
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ShowCart()));
+                        });
                       },
                       child: Text(
-                        'Order',
+                        'เลือก',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -248,11 +255,16 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
   Future<Null> addOrderToCart(int index) async {
     String nameShop = userModel.nameShop;
     String idFood = foodModels[index].id;
-    String nameFood = foodModels[index].nameFood;
+    String nameType = foodModels[index].nameType;
     String price = foodModels[index].price;
 
+    //String transport = foodModels[index].transport;
+
+    // int priceInt = int.parse(price);
+    // int sumInt = priceInt * amount;
+
     int priceInt = int.parse(price);
-    int sumInt = priceInt * amount;
+    int sumInt = priceInt ;
 
     lat2 = double.parse(userModel.lat);
     lng2 = double.parse(userModel.lng);
@@ -264,14 +276,14 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
     int transport = MyAPI().calculateTransport(distance);
 
     print(
-        'idShop = $idShop, nameShop = $nameShop, idFood = $idFood, nameFood = $nameFood, price = $price, amount = $amount, sum = $sumInt, distance = $distanceString, transport = $transport');
+        'idShop = $idShop, nameShop = $nameShop, idFood = $idFood, nameType = $nameType, price = $price, amount = $amount, sum = $sumInt, distance = $distanceString, transport = $transport');
 
     Map<String, dynamic> map = Map();
 
     map['idShop'] = idShop;
     map['nameShop'] = nameShop;
     map['idFood'] = idFood;
-    map['nameFood'] = nameFood;
+    map['nameType'] = nameType;
     map['price'] = price;
     map['amount'] = amount.toString();
     map['sum'] = sumInt.toString();
@@ -300,7 +312,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         });
       } else {
         normalDialog(context,
-            'ตะกร้ามี รายการอาหารของ ร้าน ${object[0].nameShop} กรุณา ซืือจากร้านนี่ให้ จบก่อน คะ');
+            'มี รายการของ ร้าน ${object[0].nameShop} อยู่ กรุณา ทำรายการจากร้านนี่ให้ จบก่อน คะ');
       }
     }
   }

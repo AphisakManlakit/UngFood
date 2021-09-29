@@ -1,9 +1,12 @@
+//เชื่อมกับหน้า Show_Cart
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:ungfood/model/cart_model.dart';
 
 class SQLiteHelper {
-  final String nameDatabase = 'ungFood2.db';
+  //final String nameDatabase = 'ungFood2.db';
+  final String nameDatabase = 'project64car.db';
   final String tableDatabase = 'orderTABLE';
   int version = 1;
 
@@ -11,7 +14,7 @@ class SQLiteHelper {
   final String idShopColumn = 'idShop';
   final String nameShop = 'nameShop';
   final String idFood = 'idFood';
-  final String nameFood = 'nameFood';
+  final String nameType = 'nameType';
   final String price = 'price';
   final String amount = 'amount';
   final String sum = 'sum';
@@ -25,7 +28,7 @@ class SQLiteHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $idShopColumn TEXT, $nameShop TEXT, $idFood TEXT, $nameFood TEXT, $price TEXT, $amount TEXT, $sum TEXT, $distance TEXT, $transport TEXT)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $idShopColumn TEXT, $nameShop TEXT, $idFood TEXT, $nameType TEXT, $price TEXT, $amount TEXT, $sum TEXT, $distance TEXT, $transport TEXT)'),
         version: version);
   }
 

@@ -1,3 +1,5 @@
+//เพิ่มข้อลมูลร้าน  แสดง
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -29,7 +31,7 @@ class _InfomationShopState extends State<InfomationShop> {
     String id = preferences.getString('id');
 
     String url =
-        '${MyConstant().domain}/UngFood/getUserWhereId.php?isAdd=true&id=$id';
+        '${MyConstant().domain}/CarStore/getUserWhereId.php?isAdd=true&id=$id';
     await Dio().get(url).then((value) {
       // print('value = $value');
       var result = json.decode(value.data);
@@ -78,6 +80,16 @@ class _InfomationShopState extends State<InfomationShop> {
           Row(
             children: <Widget>[
               Text(userModel.address),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              MyStyle().showTitleH2('เบอร์โทร'),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text(userModel.phone),
             ],
           ),
           MyStyle().mySizebox(),

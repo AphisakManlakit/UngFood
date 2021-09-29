@@ -45,7 +45,7 @@ class _EditInfoShopState extends State<EditInfoShop> {
     print('idShop ==>> $idShop');
 
     String url =
-        '${MyConstant().domain}/UngFood/getUserWhereId.php?isAdd=true&id=$idShop';
+        '${MyConstant().domain}/CarStore/getUserWhereId.php?isAdd=true&id=$idShop';
 
     Response response = await Dio().get(url);
     print('response ==>> $response');
@@ -59,7 +59,7 @@ class _EditInfoShopState extends State<EditInfoShop> {
         userModel = UserModel.fromJson(map);
         nameShop = userModel.nameShop;
         address = userModel.address;
-        phone = userModel.password;
+        phone = userModel.phone;
         urlPicture = userModel.urlPicture;
       });
     }
@@ -70,6 +70,7 @@ class _EditInfoShopState extends State<EditInfoShop> {
     return Scaffold(
       body: userModel == null ? MyStyle().showProgress() : showContent(),
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
         title: Text('ปรับปรุง รายละเอียดร้าน'),
       ),
     );
@@ -140,15 +141,15 @@ class _EditInfoShopState extends State<EditInfoShop> {
     map['file'] = await MultipartFile.fromFile(file.path, filename: nameFile);
     FormData formData = FormData.fromMap(map);
 
-    String urlUpload = '${MyConstant().domain}/UngFood/saveShop.php';
+    String urlUpload = '${MyConstant().domain}/CarStore/saveShop.php';
     await Dio().post(urlUpload, data: formData).then((value) async {
-      urlPicture = '/UngFood/Shop/$nameFile';
+      urlPicture = '/CarStore/Shop/$nameFile';
 
       String id = userModel.id;
       // print('id = $id');
 
       String url =
-          '${MyConstant().domain}/UngFood/editUserWhereId.php?isAdd=true&id=$id&NameShop=$nameShop&Address=$address&Phone=$phone&UrlPicture=$urlPicture&Lat=$lat&Lng=$lng';
+          '${MyConstant().domain}/CarStore/editUserWhereId.php?isAdd=true&id=$id&NameShop=$nameShop&Address=$address&Phone=$phone&UrlPicture=$urlPicture&Lat=$lat&Lng=$lng';
 
       Response response = await Dio().get(url);
       if (response.toString() == 'true') {

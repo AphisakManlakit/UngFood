@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ungfood/model/cart_model.dart';
 import 'package:ungfood/model/order_model.dart';
 import 'package:ungfood/utility/my_api.dart';
 import 'package:ungfood/utility/my_constant.dart';
 import 'package:ungfood/utility/my_style.dart';
+import 'package:ungfood/screens/partner_coming.dart';
 
 class OrderListShop extends StatefulWidget {
   @override
@@ -20,7 +22,14 @@ class _OrderListShopState extends State<OrderListShop> {
   List<List<String>> listPrices = List();
   List<List<String>> listAmounts = List();
   List<List<String>> listSums = List();
+  
   List<int> totals = List();
+
+
+  ///ทดลอง
+  List<CartModel> cartModels = List();
+  ///
+  ///
 
   @override
   void initState() {
@@ -34,19 +43,21 @@ class _OrderListShopState extends State<OrderListShop> {
     print('idShop = $idShop');
 
     String path =
-        '${MyConstant().domain}/UngFood/getOrderWhereIdShop.php?isAdd=true&idShop=$idShop';
+        '${MyConstant().domain}/CarStore/getOrderWhereIdShop.php?isAdd=true&idShop=$idShop';
     await Dio().get(path).then((value) {
-      // print('value ==>> $value');
+      print('value ==>> $value');
       var result = json.decode(value.data);
       // print('result ==>> $result');
       for (var item in result) {
         OrderModel model = OrderModel.fromJson(item);
         // print('orderDateTime = ${model.orderDateTime}');
 
-        List<String> nameFoods = MyAPI().createStringArray(model.nameFood);
+        List<String> nameTypes = MyAPI().createStringArray(model.nameType);
         List<String> prices = MyAPI().createStringArray(model.price);
         List<String> amounts = MyAPI().createStringArray(model.amount);
         List<String> sums = MyAPI().createStringArray(model.sum);
+        
+        List<String> transport = MyAPI().createStringArray(model.transport);
 
         int total = 0;
         for (var item in sums) {
@@ -54,11 +65,14 @@ class _OrderListShopState extends State<OrderListShop> {
         }
 
         setState(() {
+          //cartModels.add(model);
           orderModels.add(model);
-          listNameFoods.add(nameFoods);
+          listNameFoods.add(nameTypes);
           listPrices.add(prices);
+          //listPrices.add(transport);
           listAmounts.add(amounts);
           listSums.add(sums);
+          //listSums.add(transport);
           totals.add(total);
         });
       }
@@ -99,6 +113,7 @@ class _OrderListShopState extends State<OrderListShop> {
                               Expanded(
                                 flex: 1,
                                 child: Text(listPrices[index][index2]),
+                                //child: Text(cartModels[index][index2]),
                               ),
                               Expanded(
                                 flex: 1,
@@ -119,7 +134,7 @@ class _OrderListShopState extends State<OrderListShop> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                MyStyle().showTitleH2('Total :'),
+                                MyStyle().showTitleH2('Total  :'),
                               ],
                             ),
                           ),
@@ -137,7 +152,9 @@ class _OrderListShopState extends State<OrderListShop> {
                               color: Colors.red,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
-                              onPressed: () {},
+                              onPressed: () {
+                                //fffff
+                              },
                               icon: Icon(
                                 Icons.cancel,
                                 color: Colors.white,
@@ -150,13 +167,16 @@ class _OrderListShopState extends State<OrderListShop> {
                               color: Colors.green,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
-                              onPressed: () {},
+                              onPressed: () {
+                                // Navigator.of(context)
+                                // .push(MaterialPageRoute(builder: (context) => P_coming()));
+                              },
                               icon: Icon(
-                                Icons.restaurant,
+                                Icons.done_outline,
                                 color: Colors.white,
                               ),
                               label: Text(
-                                'Cooking',
+                                'ยืนยันรับงาน',
                                 style: TextStyle(color: Colors.white),
                               )),
                         ],
@@ -177,19 +197,19 @@ class _OrderListShopState extends State<OrderListShop> {
         children: [
           Expanded(
             flex: 3,
-            child: Text('Name Food'),
+            child: Text('ประเภทบริการ1'),
           ),
           Expanded(
             flex: 1,
-            child: Text('Price'),
+            child: Text('Price '),
           ),
           Expanded(
             flex: 1,
-            child: Text('Amount'),
+            child: Text('Amount '),
           ),
           Expanded(
             flex: 1,
-            child: Text('Sum'),
+            child: Text('Sum '),
           ),
         ],
       ),

@@ -16,6 +16,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
         title: Text('Sign Up'),
       ),
       body: ListView(
@@ -35,7 +36,7 @@ class _SignUpState extends State<SignUp> {
           MyStyle().mySizebox(),
           userRadio(),
           shopRadio(),
-          riderRadio(),
+          //riderRadio(),
           MyStyle().mySizebox(),
           registerButton(),
         ],
@@ -71,36 +72,37 @@ class _SignUpState extends State<SignUp> {
         ),
       );
 
-      Future<Null> checkUser()async{
-        String url = '${MyConstant().domain}/UngFood/getUserWhereUser.php?isAdd=true&User=$user';
-        try {
-          Response response = await Dio().get(url);
-          if (response.toString() == 'null') {
-            registerThread();
-          } else {
-            normalDialog(context, 'User นี่ $user มีคนอื่นใช้ไปแล้ว กรุณาเปลี่ยน User ใหม่');
-          }
-        } catch (e) {
-        }
+  Future<Null> checkUser() async {
+    String url =
+        '${MyConstant().domain}/CarStore/getUserWhereUser.php?isAdd=true&User=$user';
+    try {
+      Response response = await Dio().get(url);
+      if (response.toString() == 'null') {
+        registerThread();
+      } else {
+        normalDialog(
+            context, 'User นี่ $user มีคนอื่นใช้ไปแล้ว กรุณาเปลี่ยน User ใหม่');
       }
+    } catch (e) {}
+  }
 
-      Future<Null> registerThread()async{
-        String url = '${MyConstant().domain}/UngFood/addUser.php?isAdd=true&Name=$name&User=$user&Password=$password&ChooseType=$chooseType';
+  Future<Null> registerThread() async {
+    // String url =
+    //     '${MyConstant().domain}/UngFood/addUser.php?isAdd=true&Name=$name&User=$user&Password=$password&ChooseType=$chooseType';
+    String url =
+        '${MyConstant().domain}/CarStore/addUser.php?isAdd=true&Name=$name&User=$user&Password=$password&ChooseType=$chooseType';
 
-        try {
-          Response response = await Dio().get(url);
-          print('res = $response');
+    try {
+      Response response = await Dio().get(url);
+      print('res = $response');
 
-          if (response.toString() == 'true') {
-            Navigator.pop(context);
-          } else {
-            normalDialog(context, 'ไม่สามารถ สมัครได้ กรุณาลองใหม่ คะ');
-          }
-
-        } catch (e) {
-        }
-
+      if (response.toString() == 'true') {
+        Navigator.pop(context);
+      } else {
+        normalDialog(context, 'ไม่สามารถ สมัครได้ กรุณาลองใหม่ คะ');
       }
+    } catch (e) {}
+  }
 
   Widget userRadio() => Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -119,7 +121,7 @@ class _SignUpState extends State<SignUp> {
                   },
                 ),
                 Text(
-                  'ผู้สั่งอาหาร',
+                  'ผู้ใช้งานทั่วไป',
                   style: TextStyle(color: MyStyle().darkColor),
                 )
               ],
@@ -145,7 +147,7 @@ class _SignUpState extends State<SignUp> {
                   },
                 ),
                 Text(
-                  'เจ้าของร้านอาหาร',
+                  'Patner',
                   style: TextStyle(color: MyStyle().darkColor),
                 )
               ],
@@ -154,31 +156,31 @@ class _SignUpState extends State<SignUp> {
         ],
       );
 
-  Widget riderRadio() => Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            width: 250.0,
-            child: Row(
-              children: <Widget>[
-                Radio(
-                  value: 'Rider',
-                  groupValue: chooseType,
-                  onChanged: (value) {
-                    setState(() {
-                      chooseType = value;
-                    });
-                  },
-                ),
-                Text(
-                  'ผู้ส่งอาหาร',
-                  style: TextStyle(color: MyStyle().darkColor),
-                )
-              ],
-            ),
-          ),
-        ],
-      );
+  // Widget riderRadio() => Row(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: <Widget>[
+  //         Container(
+  //           width: 250.0,
+  //           child: Row(
+  //             children: <Widget>[
+  //               Radio(
+  //                 value: 'Admin',
+  //                 groupValue: chooseType,
+  //                 onChanged: (value) {
+  //                   setState(() {
+  //                     chooseType = value;
+  //                   });
+  //                 },
+  //               ),
+  //               Text(
+  //                 'Admin',
+  //                 style: TextStyle(color: MyStyle().darkColor),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     );
 
   Widget nameForm() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -256,7 +258,7 @@ class _SignUpState extends State<SignUp> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        MyStyle().showTitle('Ung Food'),
+        MyStyle().showTitle('SANE CAR'),
       ],
     );
   }

@@ -25,9 +25,9 @@ class _ShowListShopAllState extends State<ShowListShopAll> {
 
   Future<Null> readShop() async {
     String url =
-        '${MyConstant().domain}/UngFood/getUserWhereChooseType.php?isAdd=true&ChooseType=Shop';
+        '${MyConstant().domain}/CarStore/getUserWhereChooseType.php?isAdd=true&ChooseType=Shop';
     await Dio().get(url).then((value) {
-      // print('value = $value');
+
       var result = json.decode(value.data);
       int index = 0;
       for (var map in result) {

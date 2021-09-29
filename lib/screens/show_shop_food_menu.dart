@@ -30,22 +30,26 @@ class _ShowShopFoodMenuState extends State<ShowShopFoodMenu> {
 
   BottomNavigationBarItem aboutShopNav() {
     return BottomNavigationBarItem(
-      icon: Icon(Icons.restaurant),
+      icon: Icon(Icons.info),
       title: Text('รายละเอียดร้าน'),
     );
   }
 
   BottomNavigationBarItem showMenuFoodNav() {
     return BottomNavigationBarItem(
-      icon: Icon(Icons.restaurant_menu),
-      title: Text('เมนูอาหาร'),
+      // icon: Icon(Icons.connect_without_contact,color: Colors.black,),
+      // title: Text('ติดต่องาน',style: TextStyle(color: Colors.black,fontSize: 16)),
+      icon: Icon(Icons.connect_without_contact),
+      title: Text('ติดต่องาน'),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: <Widget>[MyStyle().iconShowCart(context)],
+      appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
+        actions: <Widget>[MyStyle().iconShowCart(context)],
         title: Text(userModel.nameShop),
       ),
       body: listWidgets.length == 0
@@ -56,7 +60,7 @@ class _ShowShopFoodMenuState extends State<ShowShopFoodMenu> {
   }
 
   BottomNavigationBar showBottonNavigationBar() => BottomNavigationBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.blue.shade800,
         selectedItemColor: Colors.white,
         currentIndex: indexPage,
         onTap: (value) {

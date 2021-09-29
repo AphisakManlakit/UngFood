@@ -1,22 +1,29 @@
-//หน้าหลังจากเลือกร้านแล้ว
+import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ungfood/model/order_model.dart';
 import 'package:ungfood/model/user_model.dart';
 import 'package:ungfood/utility/my_api.dart';
 import 'package:ungfood/utility/my_constant.dart';
 import 'package:ungfood/utility/my_style.dart';
 
-class AboutShop extends StatefulWidget {
+class P_coming extends StatefulWidget {
   final UserModel userModel;
-  AboutShop({Key key, this.userModel}) : super(key: key);
+  P_coming({Key key, this.userModel}) : super(key: key);
+
   @override
-  _AboutShopState createState() => _AboutShopState();
+  _P_comingState createState() => _P_comingState();
 }
 
-class _AboutShopState extends State<AboutShop> {
+class _P_comingState extends State<P_coming> {
+  String idShop;
+  List<OrderModel> orderModels = List();
+  List<List<String>> listNameFoods = List();
   UserModel userModel;
   double lat1, lng1, lat2, lng2, distance;
   String distanceString;
@@ -27,8 +34,36 @@ class _AboutShopState extends State<AboutShop> {
   void initState() {
     super.initState();
     userModel = widget.userModel;
-
+    findIdShopAndReadOrder();
     findLat1Lng1();
+  }
+
+  Future<Null> findIdShopAndReadOrder() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idShop = preferences.getString(MyConstant().keyId);
+    print('idShop = $idShop');
+
+    String path =
+        '${MyConstant().domain}/UngFood/getOrderWhereIdShop.php?isAdd=true&idShop=$idShop';
+    await Dio().get(path).then((value) {
+      print('value ==>> $value');
+      var result = json.decode(value.data);
+      // print('result ==>> $result');
+      for (var item in result) {
+        OrderModel model = OrderModel.fromJson(item);
+        // print('orderDateTime = ${model.orderDateTime}');
+
+        List<String> nameFoods = MyAPI().createStringArray(model.nameType);
+       
+
+
+        setState(() {
+          orderModels.add(model);
+          listNameFoods.add(nameFoods);
+          
+        });
+      }
+    });
   }
 
   Future<Null> findLat1Lng1() async {
@@ -51,8 +86,6 @@ class _AboutShopState extends State<AboutShop> {
     });
   }
 
-  
-
   Future<LocationData> findLocationData() async {
     Location location = Location();
     try {
@@ -74,30 +107,10 @@ class _AboutShopState extends State<AboutShop> {
                 margin: EdgeInsets.all(16.0),
                 width: 150.0,
                 height: 150.0,
-                child: Image.network(
-                  '${MyConstant().domain}${userModel.urlPicture}',
-                  fit: BoxFit.cover,
-                ),
-                
               ),
             ],
           ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text(userModel.address),
-          ),
-          ListTile(
-            leading: Icon(Icons.phone),
-            title: Text(userModel.phone),
-          ),
-          ListTile(
-            leading: Icon(Icons.directions_bike),
-            title: Text(distance == null ? '' : '$distanceString กิโลเมตร'),
-          ),
-          ListTile(
-            leading: Icon(Icons.transfer_within_a_station),
-            title: Text(transport == null ? '' : '$transport บาท บาท'),
-          ),
+
           showMap(),
         ],
       ),
@@ -136,12 +149,7 @@ class _AboutShopState extends State<AboutShop> {
     }
 
     return Container(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
-      // color: Colors.grey,
-      height: 200,
-      child: lat1 == null
-          ? MyStyle().showProgress()
-          : GoogleMap(
+            child: GoogleMap(
               initialCameraPosition: position,
               mapType: MapType.normal,
               onMapCreated: (controller) {},
@@ -150,3 +158,15 @@ class _AboutShopState extends State<AboutShop> {
     );
   }
 }
+
+// margin: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
+//       // color: Colors.grey,
+//       height: 200,
+//       child: lat1 == null
+//           ? MyStyle().showProgress()
+//           : GoogleMap(
+//               initialCameraPosition: position,
+//               mapType: MapType.normal,
+//               onMapCreated: (controller) {},
+//               markers: mySet(),
+//             ),

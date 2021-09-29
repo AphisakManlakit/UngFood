@@ -12,7 +12,7 @@ Future<void> normalDialog(BuildContext context, String message) async {
             FlatButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'OK',
+                  'OK1',
                   style: TextStyle(color: Colors.red),
                 )),
           ],
@@ -39,7 +39,7 @@ Future<void> normalDialog2(
             FlatButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'OK',
+                  'OK2',
                   style: TextStyle(color: Colors.red),
                 )),
           ],

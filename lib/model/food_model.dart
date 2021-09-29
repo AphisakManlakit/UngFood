@@ -1,7 +1,7 @@
 class FoodModel {
   String id;
   String idShop;
-  String nameFood;
+  String nameType;
   String pathImage;
   String price;
   String detail;
@@ -9,7 +9,7 @@ class FoodModel {
   FoodModel(
       {this.id,
       this.idShop,
-      this.nameFood,
+      this.nameType,
       this.pathImage,
       this.price,
       this.detail});
@@ -17,17 +17,19 @@ class FoodModel {
   FoodModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     idShop = json['idShop'];
-    nameFood = json['NameFood'];
+    nameType = json['NameType'];
     pathImage = json['PathImage'];
     price = json['Price'];
     detail = json['Detail'];
   }
 
+  String get transport => null;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['idShop'] = this.idShop;
-    data['NameFood'] = this.nameFood;
+    data['NameType'] = this.nameType;
     data['PathImage'] = this.pathImage;
     data['Price'] = this.price;
     data['Detail'] = this.detail;

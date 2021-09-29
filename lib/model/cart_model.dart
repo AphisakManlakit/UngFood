@@ -3,7 +3,7 @@ class CartModel {
   String idShop;
   String nameShop;
   String idFood;
-  String nameFood;
+  String nameType;
   String price;
   String amount;
   String sum;
@@ -15,7 +15,7 @@ class CartModel {
       this.idShop,
       this.nameShop,
       this.idFood,
-      this.nameFood,
+      this.nameType,
       this.price,
       this.amount,
       this.sum,
@@ -27,7 +27,7 @@ class CartModel {
     idShop = json['idShop'];
     nameShop = json['nameShop'];
     idFood = json['idFood'];
-    nameFood = json['nameFood'];
+    nameType = json['nameType'];
     price = json['price'];
     amount = json['amount'];
     sum = json['sum'];
@@ -41,7 +41,7 @@ class CartModel {
     data['idShop'] = this.idShop;
     data['nameShop'] = this.nameShop;
     data['idFood'] = this.idFood;
-    data['nameFood'] = this.nameFood;
+    data['nameType'] = this.nameType;
     data['price'] = this.price;
     data['amount'] = this.amount;
     data['sum'] = this.sum;

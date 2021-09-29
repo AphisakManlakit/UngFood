@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ungfood/utility/my_style.dart';
 import 'package:ungfood/utility/normal_dialog.dart';
 import 'package:ungfood/utility/signout_process.dart';
@@ -16,12 +17,21 @@ class MainShop extends StatefulWidget {
 
 class _MainShopState extends State<MainShop> {
   // Field
+  String nameUser;
   Widget currentWidget = OrderListShop();
 
   @override
   void initState() {
     super.initState();
     aboutNotification();
+    findUser();
+  }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      nameUser = preferences.getString('Name');
+    });
   }
 
   Future<Null> aboutNotification() async {
@@ -56,6 +66,7 @@ class _MainShopState extends State<MainShop> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
         title: Text('Main Shop'),
         actions: <Widget>[
           IconButton(
@@ -70,21 +81,31 @@ class _MainShopState extends State<MainShop> {
   }
 
   Drawer showDrawer() => Drawer(
-        child: ListView(
+        child: Stack(
           children: <Widget>[
-            showHead(),
-            homeMenu(),
-            foodMenu(),
-            infomationMenu(),
-            signOutMenu(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                showHead(),
+                homeMenu(),
+                foodMenu(),
+                infomationMenu(),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                menuSignOut(),
+              ],
+            ),
           ],
         ),
       );
 
   ListTile homeMenu() => ListTile(
-        leading: Icon(Icons.home),
-        title: Text('รายการอาหารที่ ลูกค้าสั่ง'),
-        subtitle: Text('รายการอาหารที่ยังไม่ได้ ทำส่งลูกค้า'),
+        leading: Icon(Icons.reorder),
+        title: Text('รายการเรียกใช้บริการ'),
+        subtitle: Text('รายการที่ลูกค้าเรียกใช้บริการ เข้ามา '),
         onTap: () {
           setState(() {
             currentWidget = OrderListShop();
@@ -94,9 +115,9 @@ class _MainShopState extends State<MainShop> {
       );
 
   ListTile foodMenu() => ListTile(
-        leading: Icon(Icons.fastfood),
-        title: Text('รายการอาหาร'),
-        subtitle: Text('รายการอาหาร ของร้าน'),
+        leading: Icon(Icons.sort),
+        title: Text('ประเภทบริการ'),
+        subtitle: Text('รายการที่ร้านให้บริการ ของร้าน'),
         onTap: () {
           setState(() {
             currentWidget = ListFoodMenuShop();
@@ -117,18 +138,35 @@ class _MainShopState extends State<MainShop> {
         },
       );
 
-  ListTile signOutMenu() => ListTile(
-        leading: Icon(Icons.exit_to_app),
-        title: Text('Sign Out'),
-        subtitle: Text('Sign Out และ กลับไป หน้าแรก'),
+  Widget menuSignOut() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.red.shade700),
+      child: ListTile(
         onTap: () => signOutProcess(context),
-      );
+        leading: Icon(
+          Icons.exit_to_app,
+          color: Colors.white,
+        ),
+        title: Text(
+          'Sign Out',
+          style: TextStyle(color: Colors.white),
+        ),
+        subtitle: Text(
+          'การออกจากระบบ',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
 
   UserAccountsDrawerHeader showHead() {
     return UserAccountsDrawerHeader(
       decoration: MyStyle().myBoxDecoration('shop.jpg'),
       currentAccountPicture: MyStyle().showLogo(),
-      accountName: Text('Name Shop'),
+      accountName: Text(
+        nameUser == null ? 'Name Login' : nameUser,
+        style: TextStyle(color: MyStyle().darkColor3, fontSize: 20),
+      ),
       accountEmail: Text('Login'),
     );
   }

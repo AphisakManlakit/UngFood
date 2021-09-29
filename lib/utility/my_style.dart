@@ -3,6 +3,11 @@ import 'package:ungfood/screens/show_cart.dart';
 
 class MyStyle {
   Color darkColor = Colors.blue.shade900;
+  Color darkColor2 = Colors.blue.shade200;
+  Color darkColor3 = Colors.white;
+  Color darkColor4 = Colors.red.shade300;
+
+  Color color1 = Colors.red.shade400;
   Color primaryColor = Colors.green;
 
   Widget iconShowCart(BuildContext context) {
@@ -27,6 +32,11 @@ class MyStyle {
     fontSize: 18.0,
     fontWeight: FontWeight.bold,
     color: Colors.purple,
+  );
+  TextStyle mainTitle1 = TextStyle(
+    fontSize: 18.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
   );
 
   TextStyle mainH2Title = TextStyle(
@@ -121,7 +131,7 @@ class MyStyle {
   Container showLogo() {
     return Container(
       width: 120.0,
-      child: Image.asset('images/logo.png'),
+      child: Image.asset('images/Logocar.png'),
     );
   }
 

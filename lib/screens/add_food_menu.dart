@@ -16,18 +16,19 @@ class AddFoodMenu extends StatefulWidget {
 
 class _AddFoodMenuState extends State<AddFoodMenu> {
   File file;
-  String nameFood, price, detail;
+  String nameType, price, detail;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('เพิ่มรายการเมนูอาหาร'),
+        backgroundColor: Colors.blue.shade900,
+        title: Text('เพิ่มรายการประเภทบริการ'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            showTitleFood('รูปอาหาร'),
+            showTitleFood('รูปภาพ'),
             groupImage(),
             showTitleFood('รายละเอียดอาหาร'),
             nameForm(),
@@ -47,13 +48,13 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton.icon(
-        color: MyStyle().primaryColor,
+        color: MyStyle().darkColor,
         onPressed: () {
           if (file == null) {
             normalDialog(context,
-                'กรุณาเลือกรูปภาพ อาหาร โดยการ Tap Camera หรือ Gallery');
-          } else if (nameFood == null ||
-              nameFood.isEmpty ||
+                'กรุณาเลือกรูปภาพ  โดยการ Tap Camera หรือ Gallery');
+          } else if (nameType == null ||
+              nameType.isEmpty ||
               price == null ||
               price.isEmpty ||
               detail == null ||
@@ -68,7 +69,7 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
           color: Colors.white,
         ),
         label: Text(
-          'Save Food Menu',
+          'Save Data',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -76,11 +77,11 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
   }
 
   Future<Null> uploadFoodAndInsertData() async {
-    String urlUpload = '${MyConstant().domain}/UngFood/saveFood.php';
+    String urlUpload = '${MyConstant().domain}/CarStore/saveType.php';
 
     Random random = Random();
     int i = random.nextInt(1000000);
-    String nameFile = 'food$i.jpg';
+    String nameFile = 'Type$i.jpg';
 
     try {
       Map<String, dynamic> map = Map();
@@ -88,14 +89,14 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
       FormData formData = FormData.fromMap(map);
 
       await Dio().post(urlUpload, data: formData).then((value) async {
-        String urlPathImage = '/UngFood/Food/$nameFile';
+        String urlPathImage = '/CarStore/Type/$nameFile';
         print('urlPathImage = ${MyConstant().domain}$urlPathImage');
 
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String idShop = preferences.getString('id');
 
         String urlInsertData =
-            '${MyConstant().domain}/UngFood/addFood.php?isAdd=true&idShop=$idShop&NameFood=$nameFood&PathImage=$urlPathImage&Price=$price&Detail=$detail';
+            '${MyConstant().domain}/CarStore/addType.php?isAdd=true&idShop=$idShop&NameType=$nameType&PathImage=$urlPathImage&Price=$price&Detail=$detail';
         await Dio().get(urlInsertData).then((value) => Navigator.pop(context));
       });
     } catch (e) {}
@@ -104,10 +105,10 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
   Widget nameForm() => Container(
         width: 250.0,
         child: TextField(
-          onChanged: (value) => nameFood = value.trim(),
+          onChanged: (value) => nameType = value.trim(),
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.fastfood),
-            labelText: 'ชื่ออาหาร',
+            prefixIcon: Icon(Icons.drive_file_rename_outline),
+            labelText: 'ชื่อประเภทบริการ',
             border: OutlineInputBorder(),
           ),
         ),
@@ -120,7 +121,7 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
           onChanged: (value) => price = value.trim(),
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.attach_money),
-            labelText: 'ราคาอาหาร',
+            labelText: 'ราคา',
             border: OutlineInputBorder(),
           ),
         ),
@@ -134,7 +135,7 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
           maxLines: 3,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.details),
-            labelText: 'รายละเอียดอาหาร',
+            labelText: 'รายละเอียด',
             border: OutlineInputBorder(),
           ),
         ),
@@ -152,7 +153,7 @@ class _AddFoodMenuState extends State<AddFoodMenu> {
           width: 250.0,
           height: 250.0,
           child: file == null
-              ? Image.asset('images/foodmenu.png')
+              ? Image.asset('images/myimage.png')
               : Image.file(file),
         ),
         IconButton(

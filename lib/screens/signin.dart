@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ungfood/model/user_model.dart';
+import 'package:ungfood/screens/main_admin.dart';
 import 'package:ungfood/screens/main_rider.dart';
 import 'package:ungfood/screens/main_shop.dart';
 import 'package:ungfood/screens/main_user.dart';
@@ -24,12 +25,13 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
         title: Text('Sign In'),
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            colors: <Color>[Colors.white, MyStyle().primaryColor],
+            colors: <Color>[Colors.white, MyStyle().darkColor2],
             center: Alignment(0, -0.3),
             radius: 1.0,
           ),
@@ -41,7 +43,7 @@ class _SignInState extends State<SignIn> {
               children: <Widget>[
                 MyStyle().showLogo(),
                 MyStyle().mySizebox(),
-                MyStyle().showTitle('Ung Food'),
+                MyStyle().showTitle('SANE CAR'),
                 MyStyle().mySizebox(),
                 userForm(),
                 MyStyle().mySizebox(),
@@ -79,7 +81,7 @@ class _SignInState extends State<SignIn> {
 
   Future<Null> checkAuthen() async {
     String url =
-        '${MyConstant().domain}/UngFood/getUserWhereUser.php?isAdd=true&User=$user';
+        '${MyConstant().domain}/CarStore/getUserWhereUser.php?isAdd=true&User=$user';
     print('url ===>> $url');
     try {
       Response response = await Dio().get(url);
@@ -95,8 +97,8 @@ class _SignInState extends State<SignIn> {
             routeTuService(MainUser(), userModel);
           } else if (chooseType == 'Shop') {
             routeTuService(MainShop(), userModel);
-          } else if (chooseType == 'Rider') {
-            routeTuService(MainRider(), userModel);
+          } else if (chooseType == 'Admin') {
+            routeTuService(MainAdmin(), userModel);
           } else {
             normalDialog(context, 'Error');
           }
@@ -131,7 +133,7 @@ class _SignInState extends State<SignIn> {
               color: MyStyle().darkColor,
             ),
             labelStyle: TextStyle(color: MyStyle().darkColor),
-            labelText: 'User :',
+            labelText: 'User Email :',
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyStyle().darkColor)),
             focusedBorder: OutlineInputBorder(

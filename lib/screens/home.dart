@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +21,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     checkPreferance();
-    
   }
 
   Future<Null> checkPreferance() async {
@@ -39,7 +36,7 @@ class _HomeState extends State<Home> {
 
       if (idLogin != null && idLogin.isNotEmpty) {
         String url =
-            '${MyConstant().domain}/UngFood/editTokenWhereId.php?isAdd=true&id=$idLogin&Token=$token';
+            '${MyConstant().domain}/CarStore/editTokenWhereId.php?isAdd=true&id=$idLogin&Token=$token';
         await Dio()
             .get(url)
             .then((value) => print('###### Update Token Success #####'));
@@ -69,8 +66,25 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
+        title: Text('Home'),
+      ),
       drawer: showDrawer(),
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              MyStyle().showLogo(),
+              MyStyle().showTitle('SANE CAR'),
+              Text('Welcome',style: TextStyle(color: Colors.blue,fontSize: 40)),
+              Text('ยินดีต้อนรับ',style: TextStyle(color: Colors.black,fontSize: 20)),
+            ],
+          ),
+          
+        ),
+      ),
     );
   }
 
@@ -86,7 +100,7 @@ class _HomeState extends State<Home> {
 
   ListTile signInMenu() {
     return ListTile(
-      leading: Icon(Icons.android),
+      leading: Icon(Icons.login),
       title: Text('Sign In'),
       onTap: () {
         Navigator.pop(context);
@@ -99,7 +113,7 @@ class _HomeState extends State<Home> {
 
   ListTile signUpMenu() {
     return ListTile(
-      leading: Icon(Icons.android),
+      leading: Icon(Icons.account_circle),
       title: Text('Sign Up'),
       onTap: () {
         Navigator.pop(context);
@@ -112,12 +126,10 @@ class _HomeState extends State<Home> {
 
   UserAccountsDrawerHeader showHeadDrawer() {
     return UserAccountsDrawerHeader(
-      decoration: MyStyle().myBoxDecoration('guest.jpg'),
-      currentAccountPicture: MyStyle().showLogo(),
+      decoration: MyStyle().myBoxDecoration('p1.jpg'),
+      //currentAccountPicture: MyStyle().showLogo(),
       accountName: Text('Guest'),
       accountEmail: Text('Please Login'),
     );
   }
-
-  
 }

@@ -12,7 +12,7 @@ class _MainRiderState extends State<MainRider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Main Rider'),
+        title: Text('Main Admin'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),

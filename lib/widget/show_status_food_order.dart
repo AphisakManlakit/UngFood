@@ -149,7 +149,7 @@ class _ShowStatusFoodOrderState extends State<ShowStatusFoodOrder> {
         children: [
           Expanded(
             flex: 3,
-            child: MyStyle().showTitleH3White('รายการอาหาร'),
+            child: MyStyle().showTitleH3White('รายการประเภทบริการ'),
           ),
           Expanded(
             flex: 1,
@@ -171,8 +171,8 @@ class _ShowStatusFoodOrderState extends State<ShowStatusFoodOrder> {
   Row buildTransport(int index) {
     return Row(
       children: [
-        MyStyle()
-            .showTitleH3Purple('ค่าขนส่ง ${orderModels[index].transport} บาท'),
+        MyStyle().showTitleH3Purple(
+            'ค่าขนส่ง ${orderModels[index].transport} บาท บาท'),
       ],
     );
   }
@@ -203,8 +203,9 @@ class _ShowStatusFoodOrderState extends State<ShowStatusFoodOrder> {
     );
   }
 
-  Center buildNonOrder() =>
-      Center(child: Text('ยังไม่เคยมี ข้อมูลการสั่งอาหาร'));
+  Center buildNonOrder() => Center(
+        child: Text('ยังไม่เคยมี ข้อมูลรายการ'),
+      );
 
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -216,7 +217,7 @@ class _ShowStatusFoodOrderState extends State<ShowStatusFoodOrder> {
   Future<Null> readOrderFromIdUser() async {
     if (idUser != null) {
       String url =
-          '${MyConstant().domain}/UngFood/getOrderWhereIdUser.php?isAdd=true&idUser=$idUser';
+          '${MyConstant().domain}/CarStore/getOrderWhereIdUser.php?isAdd=true&idUser=$idUser';
 
       Response response = await Dio().get(url);
       // print('respose ######==> $response');
@@ -224,7 +225,7 @@ class _ShowStatusFoodOrderState extends State<ShowStatusFoodOrder> {
         var result = json.decode(response.data);
         for (var map in result) {
           OrderModel model = OrderModel.fromJson(map);
-          List<String> menuFoods = changeArrey(model.nameFood);
+          List<String> menuFoods = changeArrey(model.nameType);
           List<String> prices = changeArrey(model.price);
           List<String> amounts = changeArrey(model.amount);
           List<String> sums = changeArrey(model.sum);

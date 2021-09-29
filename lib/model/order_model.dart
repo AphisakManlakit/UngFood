@@ -8,7 +8,7 @@ class OrderModel {
   String distance;
   String transport;
   String idFood;
-  String nameFood;
+  String nameType;
   String price;
   String amount;
   String sum;
@@ -25,7 +25,7 @@ class OrderModel {
       this.distance,
       this.transport,
       this.idFood,
-      this.nameFood,
+      this.nameType,
       this.price,
       this.amount,
       this.sum,
@@ -42,7 +42,7 @@ class OrderModel {
     distance = json['Distance'];
     transport = json['Transport'];
     idFood = json['idFood'];
-    nameFood = json['NameFood'];
+    nameType = json['NameType'];
     price = json['Price'];
     amount = json['Amount'];
     sum = json['Sum'];
@@ -61,7 +61,7 @@ class OrderModel {
     data['Distance'] = this.distance;
     data['Transport'] = this.transport;
     data['idFood'] = this.idFood;
-    data['NameFood'] = this.nameFood;
+    data['NameType'] = this.nameType;
     data['Price'] = this.price;
     data['Amount'] = this.amount;
     data['Sum'] = this.sum;

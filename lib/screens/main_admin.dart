@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ungfood/screens/show_cart.dart';
 import 'package:ungfood/utility/my_style.dart';
 import 'package:ungfood/utility/signout_process.dart';
 import 'package:ungfood/widget/show_list_shop_all.dart';
-import 'package:ungfood/widget/show_status_food_order.dart';
 
-class MainUser extends StatefulWidget {
+class MainAdmin extends StatefulWidget {
   @override
-  _MainUserState createState() => _MainUserState();
+  _MainAdminState createState() => _MainAdminState();
 }
 
-class _MainUserState extends State<MainUser> {
+class _MainAdminState extends State<MainAdmin> {
   String nameUser;
   Widget currentWidget;
 
   @override
   void initState() {
     super.initState();
-    currentWidget = ShowListShopAll();
     findUser();
   }
 
@@ -34,9 +31,8 @@ class _MainUserState extends State<MainUser> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
-        title: Text(nameUser == null ? 'Main User' : '$nameUser login'),
+        title: Text('Main Admin'),
         actions: <Widget>[
-          MyStyle().iconShowCart(context),
           IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () => signOutProcess(context),
@@ -44,7 +40,6 @@ class _MainUserState extends State<MainUser> {
         ],
       ),
       drawer: showDrawer(),
-      body: currentWidget,
     );
   }
 
@@ -55,9 +50,7 @@ class _MainUserState extends State<MainUser> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 showHead(),
-                menuListShop(),
-                menuCart(),
-                menuStatusFoodOrder(),
+                menuList(),
               ],
             ),
             Column(
@@ -70,31 +63,14 @@ class _MainUserState extends State<MainUser> {
         ),
       );
 
-  ListTile menuListShop() {
+  ListTile menuList() {
     return ListTile(
       onTap: () {
         Navigator.pop(context);
-        setState(() {
-          currentWidget = ShowListShopAll();
-        });
       },
-      leading: Icon(Icons.store),
-      title: Text('แสดงร้านซ่อมรถ'),
-      subtitle: Text('แสดงร้านค้า ที่สามารถเรียกใช้บริการได้'),
-    );
-  }
-
-  ListTile menuStatusFoodOrder() {
-    return ListTile(
-      onTap: () {
-        Navigator.pop(context);
-        setState(() {
-          currentWidget = ShowStatusFoodOrder();
-        });
-      },
-      leading: Icon(Icons.dns),
-      title: Text('แสดงรายการเรียกใช้'),
-      subtitle: Text('xxx'),
+      leading: Icon(Icons.summarize),
+      title: Text('แสดงรายงาน'),
+      subtitle: Text('แสดง XXXX'),
     );
   }
 
@@ -121,31 +97,16 @@ class _MainUserState extends State<MainUser> {
 
   UserAccountsDrawerHeader showHead() {
     return UserAccountsDrawerHeader(
-      decoration: MyStyle().myBoxDecoration('user1.jpg'),
+      decoration: MyStyle().myBoxDecoration('p6.jpg'),
       currentAccountPicture: MyStyle().showLogo(),
       accountName: Text(
         nameUser == null ? 'Name Login' : nameUser,
-        style: TextStyle(color: MyStyle().darkColor3,fontSize: 20),
+        style: TextStyle(color: MyStyle().darkColor3, fontSize: 20),
       ),
       accountEmail: Text(
         'Login',
-        style: TextStyle(color: MyStyle().darkColor4,fontSize: 16),
+        style: TextStyle(color: MyStyle().primaryColor),
       ),
-    );
-  }
-
-  Widget menuCart() {
-    return ListTile(
-      leading: Icon(Icons.add_shopping_cart),
-      title: Text('รายการเลือกบริการ'),
-      subtitle: Text('รายการเรียกบริการ ที่อยู่ใน ตะกร้า ยังไม่ได้ Order'),
-      onTap: () {
-        Navigator.pop(context);
-        MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => ShowCart(),
-        );
-        Navigator.push(context, route);
-      },
     );
   }
 }

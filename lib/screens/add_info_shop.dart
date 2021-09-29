@@ -49,6 +49,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
         title: Text('Add Infomation Shop'),
       ),
       body: SingleChildScrollView(
@@ -76,7 +77,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton.icon(
-        color: MyStyle().primaryColor,
+        color: MyStyle().darkColor,
         onPressed: () {
           if (nameShop == null ||
               nameShop.isEmpty ||
@@ -109,7 +110,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
     String nameImage = 'shop$i.jpg';
     print('nameImage = $nameImage, pathImage = ${file.path}');
 
-    String url = '${MyConstant().domain}/UngFood/saveShop.php';
+    String url = '${MyConstant().domain}/CarStore/saveShop.php';
 
     try {
       Map<String, dynamic> map = Map();
@@ -119,7 +120,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
       FormData formData = FormData.fromMap(map);
       await Dio().post(url, data: formData).then((value) {
         print('Response ===>>> $value');
-        urlImage = '/UngFood/Shop/$nameImage';
+        urlImage = '/CarStore/Shop/$nameImage';
         print('urlImage = $urlImage');
         editUserShop();
       });
@@ -131,7 +132,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
     String id = preferences.getString('id');
 
     String url =
-        '${MyConstant().domain}/UngFood/editUserWhereId.php?isAdd=true&id=$id&NameShop=$nameShop&Address=$address&Phone=$phone&UrlPicture=$urlImage&Lat=$lat&Lng=$lng';
+        '${MyConstant().domain}/CarStore/editUserWhereId.php?isAdd=true&id=$id&NameShop=$nameShop&Address=$address&Phone=$phone&UrlPicture=$urlImage&Lat=$lat&Lng=$lng';
 
     await Dio().get(url).then((value) {
       if (value.toString() == 'true') {
@@ -163,6 +164,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
     );
 
     return Container(
+      margin: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
       height: 300.0,
       child: GoogleMap(
         initialCameraPosition: cameraPosition,

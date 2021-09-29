@@ -24,7 +24,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
   void initState() {
     super.initState();
     foodModel = widget.foodModel;
-    name = foodModel.nameFood;
+    name = foodModel.nameType;
     price = foodModel.price;
     detail = foodModel.detail;
     pathImage = foodModel.pathImage;
@@ -35,7 +35,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
     return Scaffold(
       floatingActionButton: uploadButton(),
       appBar: AppBar(
-        title: Text('ปรับปรุง เมนู ${foodModel.nameFood}'),
+        title: Text('ปรับปรุง ข้อมูล ${foodModel.nameType}'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -67,7 +67,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: Text('คุณต้องการจะ เปลี่ยนแปลง เมนูอาหาร จริงๆ นะ ?'),
+        title: Text('คุณต้องการจะ เปลี่ยนแปลง ข้อมูล จริงๆ นะ ?'),
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -94,7 +94,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
   Future<Null> editValueOnMySQL() async {
 
     String id = foodModel.id;
-    String url = '${MyConstant().domain}/UngFood/editFoodWhereId.php?isAdd=true&id=$id&NameFood=$name&PathImage=$pathImage&Price=$price&Detail=$detail';
+    String url = '${MyConstant().domain}/CarStore/editFoodWhereId.php?isAdd=true&id=$id&NameType=$name&PathImage=$pathImage&Price=$price&Detail=$detail';
     await Dio().get(url).then((value){
       if (value.toString() == 'true') {
         Navigator.pop(context);
@@ -152,7 +152,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
               onChanged: (value) => name = value.trim(),
               initialValue: name,
               decoration: InputDecoration(
-                labelText: 'ชื่อ เมนู อาหาร',
+                labelText: 'ชื่อประเภทบริการ',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -171,7 +171,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
               keyboardType: TextInputType.number,
               initialValue: price,
               decoration: InputDecoration(
-                labelText: 'ราคา อาหาร',
+                labelText: 'ราคา ',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -191,7 +191,7 @@ class _EditFoodMenuState extends State<EditFoodMenu> {
               keyboardType: TextInputType.multiline,
               initialValue: detail,
               decoration: InputDecoration(
-                labelText: 'รายละเอียด อาหาร',
+                labelText: 'รายละเอียด ',
                 border: OutlineInputBorder(),
               ),
             ),
